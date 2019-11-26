@@ -34,13 +34,24 @@
       .selectionDispatcher(d3.dispatch(dispatchString))
       ("#scatterplot", data);
 
+    let infoTable = table()
+        .selectionDispatcher(d3.dispatch(dispatchString))
+        ("#table", data);
+
     // When the line chart selection is updated via brushing, 
-    // tell the scatterplot to update it's selection (linking)
-    lcYearPoverty.selectionDispatcher().on(dispatchString, spUnemployMurder.updateSelection);
+    // tell the scatterplot and table to update it's selection (linking)
+    lcYearPoverty.selectionDispatcher().on(dispatchString + '.a', spUnemployMurder.updateSelection);
+    lcYearPoverty.selectionDispatcher().on(dispatchString + '.b', infoTable.updateSelection);
 
     // When the scatterplot selection is updated via brushing, 
-    // tell the line chart to update it's selection (linking)
-    spUnemployMurder.selectionDispatcher().on(dispatchString, lcYearPoverty.updateSelection);
+    // tell the line chart and table to update it's selection (linking)
+    spUnemployMurder.selectionDispatcher().on(dispatchString + '.c', lcYearPoverty.updateSelection);
+    spUnemployMurder.selectionDispatcher().on(dispatchString + '.d', infoTable.updateSelection);
+
+    // When the table selection is updated via brushing, 
+    // tell the line chart and scatterplot to update it's selection (linking)
+    infoTable.selectionDispatcher().on(dispatchString + '.e', lcYearPoverty.updateSelection);
+    infoTable.selectionDispatcher().on(dispatchString + '.f', spUnemployMurder.updateSelection);
   });
 
 })());
